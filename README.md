@@ -6,3 +6,5 @@
 https://qiita.com/orimomo/items/4b741dc252bc261a8469
 （Realmで画像を保存する方法）
 https://qkuronekop.hatenablog.jp/entry/2016/08/23/231716
+(RecyclerViewで画像とメモを表示)
+https://qiita.com/Todate/items/297bc3e4d0f3d2477ed3
