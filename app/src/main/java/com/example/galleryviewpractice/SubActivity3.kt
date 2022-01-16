@@ -6,11 +6,13 @@ import android.os.Bundle
 import com.example.galleryviewpractice.databinding.ActivitySub3Binding
 import io.realm.Realm
 import io.realm.kotlin.where
+import kotlin.concurrent.timer
 
 class SubActivity3 : AppCompatActivity() {
 
     private lateinit var realm:Realm
     private lateinit var binding:ActivitySub3Binding
+    private var TM=timer(period=1000){}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,10 +23,20 @@ class SubActivity3 : AppCompatActivity() {
         setContentView(view)
 
         val maxId=realm.where<Images>().max("id")
-        var id=1L
-        var content=realm.where<Images>().equalTo("id",id+1).findFirst()
-        val CI=content?.image
-        val BMP=BitmapFactory.decodeByteArray(CI,0,CI!!.size)
-        binding.imageView4.setImageBitmap(BMP)
+        var id=-1L
+
+        TM=timer(period=1000) {
+            runOnUiThread {
+                id=(id+1L)%maxId!!.toLong()
+                var content=realm.where<Images>().equalTo("id",id+1).findFirst()
+                val CI=content?.image
+                val BMP=BitmapFactory.decodeByteArray(CI,0,CI!!.size)
+                binding.imageView4.setImageBitmap(BMP)
+            }
+        }
+
+
+
+
     }
 }
