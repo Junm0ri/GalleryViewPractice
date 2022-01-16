@@ -44,4 +44,13 @@
         app:layout_constraintStart_toEndOf="@+id/selectButton"
         app:layout_constraintTop_toTopOf="@+id/selectButton" />
 
+    <Button
+        android:id="@+id/Sub2Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Sub2"
+        app:layout_constraintBottom_toTopOf="@+id/subButton"
+        app:layout_constraintEnd_toEndOf="@+id/subButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
