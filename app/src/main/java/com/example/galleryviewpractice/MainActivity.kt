@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
             val intent=Intent(this,SubActivity::class.java)
             startActivity(intent)
         }
+        binding.deleteButton.setOnClickListener {
+            realm.executeTransaction {
+                realm.where<Images>().findAll().deleteAllFromRealm()
+            }
+        }
     }
 
     private fun selectPhoto() {
@@ -77,8 +82,10 @@ class MainActivity : AppCompatActivity() {
             val nextId=(maxId?.toLong() ?:0L)+1L
             val data=db.createObject<Images>(nextId)
             data.tag="(description of image)"
-            image?.compress(Bitmap.CompressFormat.PNG,100,ByteArrayOutputStream())
-            val imageByteArray=ByteArrayOutputStream().toByteArray()
+
+            val baos=ByteArrayOutputStream()
+            image?.compress(Bitmap.CompressFormat.JPEG,100,baos)
+            val imageByteArray=baos.toByteArray()
             data.image=imageByteArray
         }
     }
