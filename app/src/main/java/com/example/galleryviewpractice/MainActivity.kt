@@ -1,12 +1,15 @@
 package com.example.galleryviewpractice
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.galleryviewpractice.databinding.ActivityMainBinding
 import io.realm.Realm
 import io.realm.kotlin.createObject
@@ -81,16 +84,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveItem(image: Bitmap?) {
-        realm.executeTransaction { db:Realm->
-            val maxId=db.where<Images>().max("id")
-            val nextId=(maxId?.toLong() ?:0L)+1L
-            val data=db.createObject<Images>(nextId)
-            data.tag="(description of image)"
 
-            val baos=ByteArrayOutputStream()
-            image?.compress(Bitmap.CompressFormat.JPEG,100,baos)
-            val imageByteArray=baos.toByteArray()
-            data.image=imageByteArray
-        }
+        val myedit = EditText(this)
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("文字を入力してください")
+        dialog.setView(myedit)
+        dialog.setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
+            val userText = myedit.getText().toString()
+            Toast.makeText(this, "$userText と入力しました", Toast.LENGTH_SHORT).show()
+            //DBに追加
+            realm.executeTransaction { db:Realm->
+                val maxId=db.where<Images>().max("id")
+                val nextId=(maxId?.toLong() ?:0L)+1L
+                val data=db.createObject<Images>(nextId)
+                data.tag=userText
+                val baos=ByteArrayOutputStream()
+                image?.compress(Bitmap.CompressFormat.JPEG,100,baos)
+                val imageByteArray=baos.toByteArray()
+                data.image=imageByteArray
+            }
+        })
+        dialog.setNegativeButton("キャンセル", null)
+        dialog.show()
     }
+
 }
