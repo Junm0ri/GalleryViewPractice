@@ -20,8 +20,10 @@ class SubActivity3 : AppCompatActivity() {
         val view=binding.root
         setContentView(view)
 
-        val content=realm.where<Images>().findFirst()
-        var CI=content?.image
+        val maxId=realm.where<Images>().max("id")
+        var id=1L
+        var content=realm.where<Images>().equalTo("id",id+1).findFirst()
+        val CI=content?.image
         val BMP=BitmapFactory.decodeByteArray(CI,0,CI!!.size)
         binding.imageView4.setImageBitmap(BMP)
     }
