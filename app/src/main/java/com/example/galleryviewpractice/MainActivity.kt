@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
             val intent=Intent(this,SubActivity2::class.java)
             startActivity(intent)
         }
+        binding.Sub3Button.setOnClickListener {
+            val intent=Intent(this,SubActivity3::class.java)
+            startActivity(intent)
+        }
         binding.deleteButton.setOnClickListener {
             realm.executeTransaction {
                 realm.where<Images>().findAll().deleteAllFromRealm()
