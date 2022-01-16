@@ -2,6 +2,7 @@ package com.example.galleryviewpractice
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.galleryviewpractice.databinding.ActivitySub2Binding
 import io.realm.Realm
@@ -24,5 +25,12 @@ class SubActivity2 : AppCompatActivity() {
         val img=realm.where<Images>().findAll()
         val adapter=RecyclerAdapter(img)
         binding.list.adapter=adapter
+
+        adapter.setOnItemClickListener { id->
+            realm.executeTransaction { db:Realm->
+                db.where<Images>().findFirst()?.deleteFromRealm()
+            }
+            Toast.makeText(this,"done",Toast.LENGTH_SHORT)
+        }
     }
 }

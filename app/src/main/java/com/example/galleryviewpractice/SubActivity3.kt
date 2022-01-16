@@ -27,8 +27,9 @@ class SubActivity3 : AppCompatActivity() {
 
         TM=timer(period=1000) {
             runOnUiThread {
-                id=(id+1L)%maxId!!.toLong()
-                var content=realm.where<Images>().equalTo("id",id+1).findFirst()
+                if (id==maxId) id=-1L
+                var content=realm.where<Images>().greaterThan("id",id).findFirst()
+                id=content!!.id
                 val CI=content?.image
                 val BMP=BitmapFactory.decodeByteArray(CI,0,CI!!.size)
                 binding.imageView4.setImageBitmap(BMP)

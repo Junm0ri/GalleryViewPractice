@@ -12,6 +12,11 @@ import io.realm.RealmRecyclerViewAdapter
 
 class RecyclerAdapter(data:OrderedRealmCollection<Images>): RealmRecyclerViewAdapter<Images,RecyclerAdapter.ViewHolder>(data,true){
 
+    private var listener: ((Long?)->Unit)?=null
+    fun setOnItemClickListener(listener:(Long?)->Unit) {
+        this.listener=listener
+    }
+
     init {
         setHasStableIds(true)
     }
@@ -32,9 +37,12 @@ class RecyclerAdapter(data:OrderedRealmCollection<Images>): RealmRecyclerViewAda
         holder.text.text=img?.tag
         val BMP= BitmapFactory.decodeByteArray(img?.image,0,img?.image!!.size)
         holder.image.setImageBitmap(BMP)
+        holder.itemView.setOnClickListener {
+            listener?.invoke(img?.id)
+        }
     }
 
     override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
+        return getItem(position)?.id ?:0
     }
 }
